@@ -1,0 +1,26 @@
+import random
+from collections import defaultdict
+
+text = "the quick brown fox jumps over the lazy dog"
+
+tokens = text.split()
+
+bigrams = list(zip(tokens[:-1], tokens[1:]))
+model = defaultdict(list)
+for w1, w2 in bigrams:
+    model[w1].append(w2)
+
+def generate_text(model, start_word, length=10):
+    word = start_word
+    result = [word]
+    for _ in range(length - 1):
+        next_words = model.get(word, [])
+        if not next_words:
+            break
+        word = random.choice(next_words)
+        result.append(word)
+    return " ".join(result)
+
+
+output = generate_text(model, start_word="the", length=10)
+print("Generated Text:", output)
